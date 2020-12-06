@@ -35,10 +35,12 @@ for data in sys.stdin:
     record = data.split(',')
     latitude = record[len(record)-9]
     longitude = record[len(record)-8]
+    category = record[len(record)-24]
+    time = record[2]
     if is_float(latitude) and is_float(longitude):
         point = Point((float(latitude), float(longitude)))
         for p in polygonList:
             if point.within(p):
-                sys.stdout.write("%s,%s\t%s\n" %
-                                 (p.centroid.x, p.centroid.y, 1))
+                sys.stdout.write("%s,%s,%s,%s\t%s\n" %
+                                 (p.centroid.x, p.centroid.y, time[:2], category, 1))
                 break
