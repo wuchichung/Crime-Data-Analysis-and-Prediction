@@ -7,7 +7,8 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from fbprophet import Prophet
 from matplotlib.dates import datestr2num
-from util import load_data
+from matplotlib.offsetbox import AnchoredText
+from util import load_data, get_mean_absolute_error
 
 
 def process(args):
@@ -29,6 +30,9 @@ def process(args):
     val_df = pd.DataFrame(val_events, columns=['ds', 'y'])
     forecast = m.predict(val_df)
 
+    ##
+    MAE = get_mean_absolute_error(forecast["yhat"], val_df["y"])
+
     ## plot result
     ## transform date format
     dates = datestr2num([d.strftime('%m/%d/%Y') for d in val_df["ds"]])
@@ -41,11 +45,14 @@ def process(args):
     l_pred_lower, = plt.plot(dates, forecast["yhat_lower"], "g--")
     l_pred_upper, = plt.plot(dates, forecast["yhat_upper"], "c--")
 
+    ## show MAE
+    plt.gca().add_artist(AnchoredText("MAE: %.2f" % MAE, loc="upper center"))
+
     ## plot legends
     plt.legend(handles=[l_gt, l_pred, l_pred_lower, l_pred_upper],
                labels=['ground truth', 'prediction', 'prediction (lower)', 'prediction (upper)'],
                loc="best")
-
+    ## rotate time
     plt.gcf().autofmt_xdate()
     ## set titles
     plt.title("NYPD Crime Prediction by Prophet")
