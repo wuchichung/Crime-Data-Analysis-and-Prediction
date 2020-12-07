@@ -23,7 +23,6 @@ def process(args):
 
     ## remove outliers
     if args["window_size"]:
-        assert args["threshold"], "outlier removal threshold need to be specified"
         outlier_indices = get_outlier_indices(train_event_counts_first_diff,
                                               args["window_size"],
                                               args["threshold"])
