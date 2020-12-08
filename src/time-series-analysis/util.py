@@ -20,7 +20,7 @@ def get_mean_absolute_error(ground_truth, prediction):
     return np.mean(abs(np.array(ground_truth) - np.array(prediction)))
 
 
-def remove_outliers(data, window_size, thresh=2):
+def get_outlier_indices(data, window_size, thresh=3):
     ## get outlier index
     indices = []
     for start_index in range(0, len(data), int(0.5 * window_size)):
@@ -34,9 +34,4 @@ def remove_outliers(data, window_size, thresh=2):
         ## append outlier indices
         indices.extend([i for i in range(start_index, stop_index) if abs(data[i] - mean) > threshold])
 
-    ## remove outliers
-    if len(indices):
-        indices = list(set(indices))
-        data = np.delete(data, indices)
-
-    return data
+    return sorted(list(set(indices)))
