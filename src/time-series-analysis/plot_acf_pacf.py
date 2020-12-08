@@ -21,11 +21,11 @@ def process(args):
 
     ax = plt.subplot(2, 1, 1)
     plt.bar(range(acf_values.shape[0]), acf_values)
-    ax.title.set_text("ACF of creaxon event count first difference")
+    ax.title.set_text("ACF of crime event count first difference")
 
     ax = plt.subplot(2, 1, 2)
     plt.bar(range(pacf_values.shape[0]), pacf_values)
-    ax.title.set_text("PACF of creaoxn event count first difference")
+    ax.title.set_text("PACF of crime event count first difference")
 
     plt.show()
 
